@@ -3,7 +3,7 @@ import asyncio
 from telebot import types
 from telebot.async_telebot import AsyncTeleBot
 
-import data
+import config
 from parser import periodic_task, first_fill
 from sender import get_receiver
 
@@ -13,7 +13,7 @@ async def run():
     from parser import coins
     parser_data = coins
     k = list(parser_data.keys())
-    bot = AsyncTeleBot(data.token)
+    bot = AsyncTeleBot(config.token)
 
     async def polling():
         await bot.polling(none_stop=True)
