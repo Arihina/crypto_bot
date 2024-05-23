@@ -22,7 +22,8 @@ async def run():
         while True:
             async for receiver in get_receiver():
                 from parser import coins
-                await bot.send_message(receiver[0], coins[receiver[1]])
+                price, link = coins[receiver[1]]
+                await bot.send_message(receiver[0], f'Рассылка: {receiver[1]} — {price}\n{link}')
             await asyncio.sleep(28800)
 
     @bot.message_handler(commands=['start'])
