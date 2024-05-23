@@ -57,7 +57,7 @@ def first_fill():
         coins[name] = (price, "https://www.binance.com" + link)
 
 
-async def main():
+async def parse():
     ref = "https://www.binance.com/ru/markets/overview/"
     header = {"user-agent": fake_useragent.UserAgent().random}
     global coins
@@ -68,5 +68,5 @@ async def main():
 
 async def periodic_task():
     while True:
-        await main()
+        await parse()
         await asyncio.sleep(15)

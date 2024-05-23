@@ -5,6 +5,7 @@ from telebot.async_telebot import AsyncTeleBot
 
 import data
 from parser import periodic_task, first_fill
+from sender import get_receiver
 
 
 async def run():
@@ -16,6 +17,13 @@ async def run():
 
     async def polling():
         await bot.polling(none_stop=True)
+
+    async def sender():
+        while True:
+            async for receiver in get_receiver():
+                from parser import coins
+                await bot.send_message(receiver[0], coins[receiver[1]])
+            await asyncio.sleep(28800)
 
     @bot.message_handler(commands=['start'])
     async def handle_start(message):
@@ -60,7 +68,7 @@ async def run():
             price, link = last_coins[message.text]
             await bot.send_message(message.chat.id, f'{message.text} — {price}\n{link}')
 
-    tasks = [polling(), periodic_task()]
+    tasks = [polling(), periodic_task(), sender()]
     await asyncio.gather(*tasks)
 
 
