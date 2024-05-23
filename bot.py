@@ -44,11 +44,14 @@ async def run_bot_and_parser():
         try:
             coin = message.text.split(' ', 1)[1]
             if coin in k:
+                with open("users.txt", "w") as file:
+                    file.write(f"{message.chat.id} {coin}\n")
                 await bot.send_message(message.chat.id,
-                                       f"OK")
+                                       f"Вы подписаны на ежедневную рассылку по криптовалюте "
+                                       f"{coin}")
         except:
             await bot.send_message(message.chat.id,
-                                   f"Указанной валюты нет в нашем списке")
+                                   f"Указанной криптовалюты нет в нашем списке")
 
     @bot.message_handler(content_types='text')
     async def message_reply(message):
