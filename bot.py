@@ -23,22 +23,23 @@ async def run():
             async for receiver in get_receiver():
                 from parser import coins
                 price, link = coins[receiver[1]]
-                await bot.send_message(receiver[0], f'Рассылка: {receiver[1]} — {price}\n{link}')
+                await bot.send_message(receiver[0], f'Mailing: {receiver[1]} — {price}\n{link}')
             await asyncio.sleep(28800)
 
     @bot.message_handler(commands=['start'])
     async def handle_start(message):
         await bot.send_message(message.chat.id,
-                               f"Привет, интересуешься криптовалютой?\nЯ тоже, поэтому давай посмотрим, "
-                               f"что тут у нас есть!\nВоспользуйся командой /help, чтобы узнать, "
-                               f"какие у меня есть функции!")
+                               f"Hi, are you interested in cryptocurrency?\nMe too, so let's see, "
+                               f"what we have here.\nUse the command /help, to find out "
+                               f"what functions I have")
 
     @bot.message_handler(commands=['help'])
     async def handle_start(message):
         await bot.send_message(message.chat.id,
-                               f"/start - запуск работы бота\n/help - справка о"
-                               f" командах бота\n/crypto - просмотр курса криптовалют\n"
-                               f"/subscribe + название доступной валюты - подписка на ежедневную рассылку")
+                               f"/start - starting the bot\n/help - information about"
+                               f" bot commands\n/crypto - viewing the cryptocurrency exchange rate\n"
+                               f"/subscribe + name of the available currency - subscribe to the daily newsletter "
+                               f"(3 times a day)")
 
     @bot.message_handler(commands=['crypto'])
     async def send_countries(message):
@@ -46,7 +47,7 @@ async def run():
         for coin in k:
             markup.add(types.KeyboardButton(coin))
 
-        await bot.send_message(message.chat.id, "Список криптовалют:", reply_markup=markup)
+        await bot.send_message(message.chat.id, "List of cryptocurrencies:", reply_markup=markup)
 
     @bot.message_handler(commands=['subscribe'])
     async def newsletter_subscribe(message):
@@ -56,11 +57,11 @@ async def run():
                 with open("users.txt", "a") as file:
                     file.writelines(f"{message.chat.id} {coin}\n")
                 await bot.send_message(message.chat.id,
-                                       f"Вы подписаны на ежедневную рассылку по криптовалюте "
+                                       f"You have subscribed to the daily cryptocurrency newsletter "
                                        f"{coin}")
         except:
             await bot.send_message(message.chat.id,
-                                   f"Указанной криптовалюты нет в нашем списке")
+                                   f"The specified cryptocurrency is not on our list")
 
     @bot.message_handler(content_types='text')
     async def message_reply(message):
