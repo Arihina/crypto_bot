@@ -7,7 +7,7 @@ import data
 from parser import periodic_task, first_fill
 
 
-async def run_bot_and_parser():
+async def run():
     first_fill()
     from parser import coins
     parser_data = coins
@@ -44,8 +44,8 @@ async def run_bot_and_parser():
         try:
             coin = message.text.split(' ', 1)[1]
             if coin in k:
-                with open("users.txt", "w") as file:
-                    file.write(f"{message.chat.id} {coin}\n")
+                with open("users.txt", "a") as file:
+                    file.writelines(f"{message.chat.id} {coin}\n")
                 await bot.send_message(message.chat.id,
                                        f"Вы подписаны на ежедневную рассылку по криптовалюте "
                                        f"{coin}")
@@ -65,4 +65,4 @@ async def run_bot_and_parser():
 
 
 if __name__ == "__main__":
-    asyncio.run(run_bot_and_parser())
+    asyncio.run(run())
