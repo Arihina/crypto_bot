@@ -20,12 +20,16 @@ async def run_bot_and_parser():
     @bot.message_handler(commands=['start'])
     async def handle_start(message):
         await bot.send_message(message.chat.id,
-                               f"Привет, интересуешься криптовалютой?\nЯ тоже, поэтому давай посмотрим, что тут у нас есть!\nВоспользуйся командой /help, чтобы узнать, какие у меня есть функции!")
+                               f"Привет, интересуешься криптовалютой?\nЯ тоже, поэтому давай посмотрим, "
+                               f"что тут у нас есть!\nВоспользуйся командой /help, чтобы узнать, "
+                               f"какие у меня есть функции!")
 
     @bot.message_handler(commands=['help'])
     async def handle_start(message):
         await bot.send_message(message.chat.id,
-                               f"/start - запуск работы бота\n/help - справка о командах бота\n/crypto - просмотр курса криптовалют")
+                               f"/start - запуск работы бота\n/help - справка о"
+                               f" командах бота\n/crypto - просмотр курса криптовалют\n"
+                               f"/subscribe + название доступной валюты - подписка на ежедневную рассылку")
 
     @bot.message_handler(commands=['crypto'])
     async def send_countries(message):
@@ -34,6 +38,17 @@ async def run_bot_and_parser():
             markup.add(types.KeyboardButton(coin))
 
         await bot.send_message(message.chat.id, "Список криптовалют:", reply_markup=markup)
+
+    @bot.message_handler(commands=['subscribe'])
+    async def newsletter_subscribe(message):
+        try:
+            coin = message.text.split(' ', 1)[1]
+            if coin in k:
+                await bot.send_message(message.chat.id,
+                                       f"OK")
+        except:
+            await bot.send_message(message.chat.id,
+                                   f"Указанной валюты нет в нашем списке")
 
     @bot.message_handler(content_types='text')
     async def message_reply(message):
